@@ -16,7 +16,7 @@ const signUP = catchError(async (req , res , next) =>{
     const users = await userModel.create(req.body) 
     // users[0].password = undefined 
 
-    res.status(201).json({message :'success' , users }) 
+    res.status(201).json({data:{ message :'success' , users}}) 
 })
 
 
@@ -64,7 +64,7 @@ const signIn = catchError(async (req , res , next) =>{
 const getUserProfile = catchError(async(req , res , next)=>{
     const user = await userModel.findById(req.user._id)
     if(!user) return next(new appError('user not found' , 404))     
-    res.status(200).json({message :'success' , user })
+    res.status(200).json({data:{message :'success' , user }})
 
     i
 
