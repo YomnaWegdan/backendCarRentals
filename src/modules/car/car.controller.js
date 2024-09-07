@@ -1,4 +1,3 @@
-// import {carModel} from './car.model.js';
 
 import { brandModel } from "../../models/brand.model.js";
 import { carModel } from "../../models/car.model.js";
@@ -36,14 +35,14 @@ export const createCar = async (req, res, next) => {
     let coverImageList = [];
     for (const file of req.files.coverImages) {
         const { secure_url, public_id } = await cloudinary.uploader.upload(file.path, {
-            folder: `Cars/brands/${brandExist.customId}/products/${customId}/coverImages`,
+            folder: `Cars/${customId}/coverImages`,
         });
         coverImageList.push({ secure_url, public_id });
     }
 
     // Upload main image to Cloudinary
     const { secure_url, public_id } = await cloudinary.uploader.upload(req.files.image[0].path, {
-        folder: `Cars/brands/${brandExist.customId}/products/${customId}/mainImage`,
+        folder: `Cars/${customId}/mainImage`,
     });
 
     // Create a new car
@@ -113,7 +112,7 @@ export const updateCar = async (req, res) => {
             if(req.files?.image?.length){
                 await cloudinary.uploader.destroy(car.image.public_id)
                 const { secure_url, public_id } = await cloudinary.uploader.upload(req.files.image[0].path , { 
-                    folder:`Cars/brands/${brand.customId}/products/${customId}/mainImage`,
+                    folder:`Cars/${customId}/mainImage`,
                 })
                 product.image = {secure_url , public_id}
             }
@@ -123,7 +122,7 @@ export const updateCar = async (req, res) => {
                 for(const file of req.files.coverImages){
                     await cloudinary.api.delete_resources_by_prefix(`Cars/brands/${brand.customId}/products/${customId}/coverImages`)
                     const { secure_url, public_id } = await cloudinary.uploader.upload(file.path , { 
-                        folder:`Cars/brands/${brand.customId}/products/${customId}/coverImages`,
+                        folder:`Cars/${customId}/coverImages`,
                     })
                     list.push({secure_url , public_id})
                 }
