@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const carSchema  = new Schema({
     brand: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Brand',
+        ref: 'brand',
         required: true
     },   
     model: { type: String, required: true },
