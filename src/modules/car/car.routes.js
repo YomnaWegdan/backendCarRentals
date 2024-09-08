@@ -8,8 +8,8 @@ import { multerHost, validExtensions } from "../../middlewares/multer.js";
 const carRouter = Router();
 
 // Get all cars or by ID
-carRouter.get('/', auth(['user', 'admin']), CC.getCars);
-carRouter.get('/:id', auth(['user', 'admin']), CC.getCarById);
+carRouter.get('/', CC.getCars);
+carRouter.get('/:id', CC.getCarById);
 
 // Admin routes (protected)
 carRouter.post(
@@ -23,8 +23,8 @@ carRouter.post(
   CC.createCar
 );
 
-carRouter.get('/availableCars' , auth(['admin', 'user']) , CC.getAvailableCars)
-carRouter.get('/availableCarsByBrand' , auth(['admin', 'user']) , CC.getAvailableCarsByBrand)
+carRouter.get('/availableCars' , CC.getAvailableCars)
+carRouter.get('/availableCarsByBrand' , CC.getAvailableCarsByBrand)
 
 
 
