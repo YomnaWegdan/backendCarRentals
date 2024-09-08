@@ -7,6 +7,11 @@ import { deleteFromCloudinary } from './utilities/deleteFromCloudinary.js'
 import { deleteFromDatabase } from './utilities/deleteFromDatabase.js'
 export const initApp = (app , express)=>{
     app.use(cors())
+  app.use(cors({
+  origin: 'http://localhost:3000', // Allow requests from this domain
+  methods: 'GET,POST,PUT,DELETE',  // Allow these HTTP methods
+}));
+
 app.use(express.json())
 
 app.get('/', (req, res) => res.status(200).json({message: 'success'}));
