@@ -1,9 +1,6 @@
-import { carModel } from '../../models/car.model.js';
 
-import {bookingModel} from '../../models/booking.model.js';
-
-import { carModel } from './car.model.js';
-import { bookingModel } from './booking.model.js';
+import { carModel } from "../../models/car.model.js";
+import { bookingModel } from "../../models/booking.model.js";
 
 export const createBooking = async (req, res) => {
     const { car, startDate, endDate } = req.body;
@@ -48,6 +45,7 @@ export const createBooking = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
 
 
 // Get all bookings for a user
