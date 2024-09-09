@@ -8,7 +8,7 @@ const createBookingValidation = {
             startDate:Joi.date().required(),
             endDate:Joi.date().required(),
             // totalPrice:Joi.number().required(),
-            status:Joi.string().required() 
+            status:Joi.string()
         }).required(),
 
     headers: Joi.object({
