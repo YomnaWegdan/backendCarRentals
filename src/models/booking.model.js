@@ -21,7 +21,6 @@ const bookingSchema  = new Schema({
     },
     totalPrice: {
         type: Number,
-        required: true,
     },
     status: {
         type: String,
