@@ -58,7 +58,7 @@ const signIn = catchError(async (req , res , next) =>{
     await userModel.updateOne({email:email.toLowerCase()} , {loggedIn:true})
 
     
-    res.status(200).json({message :'success' , token })
+    res.status(200).json({message :'success' , token , user })
 })
 
 const getUserProfile = catchError(async(req , res , next)=>{
