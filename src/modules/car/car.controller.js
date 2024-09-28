@@ -90,44 +90,51 @@ export const updateCar = async (req, res, next) => {
         car.model = req.body.model || car.model;
         car.year = req.body.year || car.year;
         car.pricePerDay = req.body.pricePerDay || car.pricePerDay;
-        car.availability = req.body.availability ?? car.availability; // Ensure availability is set correctly
+        car.availability = req.body.availability ?? car.availability;
         car.brand = req.body.brand || car.brand;
 
         // Handle image uploads
         if (req.files) {
-            // Handle main image upload
+            // Check if main image is provided
             if (req.files.image && req.files.image.length > 0) {
-                await cloudinary.uploader.destroy(car.image.public_id);
-                const { secure_url, public_id } = await cloudinary.uploader.upload(req.files.image[0].path, {
-                    folder: `Cars/${car.customId}/mainImage`,
-                });
-                car.image = { secure_url, public_id };
+                try {
+                    await cloudinary.uploader.destroy(car.image.public_id); // Remove old image
+                    const { secure_url, public_id } = await cloudinary.uploader.upload(req.files.image[0].path, {
+                        folder: `Cars/${car.customId}/mainImage`,
+                    });
+                    car.image = { secure_url, public_id }; // Update image info
+                } catch (err) {
+                    console.error("Error uploading main image:", err);
+                    return next(new appError("Failed to upload main image", 500));
+                }
             }
 
-            // Handle cover images upload
+            // Handle cover images
             if (req.files.coverImages && req.files.coverImages.length > 0) {
-                // Remove old cover images from Cloudinary
-                await cloudinary.api.delete_resources_by_prefix(`Cars/${car.customId}/coverImages`);
-                
-                // Upload new cover images
-                const coverImageList = [];
-                for (const file of req.files.coverImages) {
-                    const { secure_url, public_id } = await cloudinary.uploader.upload(file.path, {
-                        folder: `Cars/${car.customId}/coverImages`,
-                    });
-                    coverImageList.push({ secure_url, public_id });
+                try {
+                    await cloudinary.api.delete_resources_by_prefix(`Cars/${car.customId}/coverImages`); // Remove old cover images
+
+                    const coverImageList = [];
+                    for (const file of req.files.coverImages) {
+                        const { secure_url, public_id } = await cloudinary.uploader.upload(file.path, {
+                            folder: `Cars/${car.customId}/coverImages`,
+                        });
+                        coverImageList.push({ secure_url, public_id });
+                    }
+                    car.coverImages = coverImageList; // Update cover images
+                } catch (err) {
+                    console.error("Error uploading cover images:", err);
+                    return next(new appError("Failed to upload cover images", 500));
                 }
-                car.coverImages = coverImageList; // Update car's cover images
             }
         }
 
         // Save updated car
         const updatedCar = await car.save();
-        res.status(200).json(updatedCar); // Return the updated car details
+        res.status(200).json(updatedCar);
     } catch (error) {
-        // Handle any potential errors gracefully
-        console.error(error); // Log the error for debugging
-        next(error); // Pass the error to the error handler middleware
+        console.error("Error in updateCar:", error);
+        next(error);
     }
 };
 
