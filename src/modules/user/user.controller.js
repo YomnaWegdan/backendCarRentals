@@ -66,10 +66,15 @@ const getUserProfile = catchError(async(req , res , next)=>{
     if(!user) return next(new appError('user not found' , 404))     
     res.status(200).json({data:{message :'success' , user }})
 
-    i
 
 })
 
+const getUsers=catchError(async(req , res , next)=>{
+    const users = await userModel.find()
+    if(!users) return next(new appError('users not found' , 404))     
+    res.status(200).json({message :'success' , users })
+})
+
 export {
-    signUP  , forgetPassword , resetPassword , signIn , getUserProfile
+    signUP  , forgetPassword , resetPassword , signIn , getUserProfile , getUsers
 }
