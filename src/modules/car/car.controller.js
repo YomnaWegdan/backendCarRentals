@@ -95,7 +95,6 @@ export const updateCar = async (req, res, next) => {
 
         // Handle image uploads
         if (req.files) {
-            // Check if main image is provided
             if (req.files.image && req.files.image.length > 0) {
                 try {
                     await cloudinary.uploader.destroy(car.image.public_id); // Remove old image
@@ -109,10 +108,10 @@ export const updateCar = async (req, res, next) => {
                 }
             }
 
-            // Handle cover images
             if (req.files.coverImages && req.files.coverImages.length > 0) {
                 try {
-                    await cloudinary.api.delete_resources_by_prefix(`Cars/${car.customId}/coverImages`); // Remove old cover images
+                    // Remove old cover images from Cloudinary
+                    await cloudinary.api.delete_resources_by_prefix(`Cars/${car.customId}/coverImages`);
 
                     const coverImageList = [];
                     for (const file of req.files.coverImages) {
