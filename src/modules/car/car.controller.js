@@ -126,7 +126,6 @@ export const updateCar = async (req, res, next) => {
     }
 };
 
-// Delete car (Admin only)
 export const deleteCar = async (req, res, next) => {
     try {
         const car = await carModel.findById(req.params.id);
@@ -145,13 +144,14 @@ export const deleteCar = async (req, res, next) => {
             await cloudinary.uploader.destroy(coverImage.public_id);
         }
 
-        // Delete car
-        await car.remove();
+        // Delete car using findByIdAndDelete
+        await carModel.findByIdAndDelete(req.params.id); // Use this instead
         res.status(200).json({ message: 'Car removed' });
     } catch (error) {
         next(error);
     }
 };
+
 
 // Get available cars
 export const getAvailableCars = async (req, res, next) => {
