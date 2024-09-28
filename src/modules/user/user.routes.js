@@ -5,6 +5,7 @@ import { validation } from "../../middlewares/validate.js";
 import * as UV from "./user.validate.js"
 
 const userRouter = Router()
+userRouter.get('/' , auth(['user', 'admin']) , UC.getUsers)
 
 userRouter.post('/signup' , validation(UV.signupValidation) , UC.signUP)
 
