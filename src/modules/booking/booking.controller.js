@@ -63,7 +63,6 @@ import { bookingModel } from "../../models/booking.model.js";
     res.json(booking);
 };
 
-// Add these in your booking controller (BC.js)
 
 // DELETE a booking by ID
  const deleteBooking = async (req, res) => {
