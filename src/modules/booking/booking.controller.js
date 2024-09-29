@@ -110,4 +110,4 @@ import { bookingModel } from "../../models/booking.model.js";
   }
 };
 
-export default {createBooking , getUserBookings , getBookingById , deleteBooking , updateBooking , cancelBooking}
+export default { createBooking, getUserBookings, getBookingById, deleteBooking, updateBooking, cancelBooking };
