@@ -13,5 +13,7 @@ bookingRouter.get("/:id", auth(['user', 'admin']), bookingController.getBookingB
 bookingRouter.put("/:id", auth(['user', 'admin']), bookingController.updateBooking); // Update a booking by ID
 bookingRouter.delete("/:id", auth(['user', 'admin']), bookingController.deleteBooking); // Delete a booking by ID
 bookingRouter.put("/:id/cancel", auth(['user', 'admin']), bookingController.cancelBooking); // Cancel a booking by ID
+bookingRouter.get("/count", auth(['admin', 'user']), bookingController.getBookingCount);
+
 
 export default bookingRouter;
