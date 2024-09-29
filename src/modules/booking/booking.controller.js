@@ -63,14 +63,50 @@ export const getBookingById = async (req, res) => {
     res.json(booking);
 };
 
-// Cancel a booking
-export const cancelBooking = async (req, res) => {
-    const booking = await bookingModel.findById(req.params.id);
+// Add these in your booking controller (BC.js)
 
-    if (!booking) return res.status(404).json({ message: 'Booking not found' });
-
-    booking.status = 'Cancelled';
-    const cancelledBooking = await booking.save();
-
-    res.json(cancelledBooking);
+// DELETE a booking by ID
+export const deleteBooking = async (req, res) => {
+  try {
+    const booking = await bookingModel.findByIdAndDelete(req.params.id);
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+    res.status(200).json({ message: 'Booking deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
+
+// UPDATE a booking by ID
+export const updateBooking = async (req, res) => {
+  try {
+    const booking = await bookingModel.findById(req.params.id);
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+
+    Object.assign(booking, req.body); // Update booking fields with req.body
+    const updatedBooking = await booking.save();
+    res.status(200).json(updatedBooking);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+// CANCEL a booking by ID
+export const cancelBooking = async (req, res) => {
+  try {
+    const booking = await bookingModel.findById(req.params.id);
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+
+    booking.status = 'cancelled'; // Update the status to cancelled
+    const cancelledBooking = await booking.save();
+    res.status(200).json(cancelledBooking);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
