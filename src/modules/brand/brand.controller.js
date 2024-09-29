@@ -67,7 +67,19 @@ export const deleteBrand = async (req, res) => {
             return res.status(404).json({ message: 'Brand not found' });
         }
         res.json({ message: 'Brand deleted' });
+
+        
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const getBrandCount = async (req, res) => {
+    try {
+      const count = await brandModel.countDocuments();
+      res.json({ totalBrands: count });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  
