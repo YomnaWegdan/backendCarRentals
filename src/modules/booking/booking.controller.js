@@ -109,4 +109,13 @@ import { bookingModel } from "../../models/booking.model.js";
   }
 };
 
-export default { createBooking, getUserBookings, getBookingById, deleteBooking, updateBooking, cancelBooking };
+export const getBookingCount = async (req, res) => {
+  try {
+    const count = await bookingModel.countDocuments();
+    res.json({ totalBookings: count });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export default { createBooking, getUserBookings, getBookingById, deleteBooking, updateBooking, cancelBooking , getBookingCount };
