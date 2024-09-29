@@ -184,4 +184,11 @@ export const getAvailableCarsByBrand = async (req, res, next) => {
         next(error);
     }
 };
-
+export const getCarCount = async (req, res) => {
+    try {
+      const count = await carModel.countDocuments();
+      res.json({ totalCars: count });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
