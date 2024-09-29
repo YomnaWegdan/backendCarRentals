@@ -2,7 +2,7 @@
 import { carModel } from "../../models/car.model.js";
 import { bookingModel } from "../../models/booking.model.js";
 
-export const createBooking = async (req, res) => {
+ const createBooking = async (req, res) => {
     const { car, startDate, endDate } = req.body;
 
     try {
@@ -49,13 +49,13 @@ export const createBooking = async (req, res) => {
 
 
 // Get all bookings for a user
-export const getUserBookings = async (req, res) => {
+ const getUserBookings = async (req, res) => {
     const bookings = await bookingModel.find({ user: req.user._id }).populate('car', 'brand model pricePerDay');
     res.json(bookings);
 };
 
 // Get a single booking by ID
-export const getBookingById = async (req, res) => {
+ const getBookingById = async (req, res) => {
     const booking = await bookingModel.findById(req.params.id).populate('car', 'brand model pricePerDay');
 
     if (!booking) return res.status(404).json({ message: 'Booking not found' });
@@ -66,7 +66,7 @@ export const getBookingById = async (req, res) => {
 // Add these in your booking controller (BC.js)
 
 // DELETE a booking by ID
-export const deleteBooking = async (req, res) => {
+ const deleteBooking = async (req, res) => {
   try {
     const booking = await bookingModel.findByIdAndDelete(req.params.id);
     if (!booking) {
@@ -79,7 +79,7 @@ export const deleteBooking = async (req, res) => {
 };
 
 // UPDATE a booking by ID
-export const updateBooking = async (req, res) => {
+ const updateBooking = async (req, res) => {
   try {
     const booking = await bookingModel.findById(req.params.id);
     if (!booking) {
@@ -95,7 +95,7 @@ export const updateBooking = async (req, res) => {
 };
 
 // CANCEL a booking by ID
-export const cancelBooking = async (req, res) => {
+ const cancelBooking = async (req, res) => {
   try {
     const booking = await bookingModel.findById(req.params.id);
     if (!booking) {
@@ -110,3 +110,4 @@ export const cancelBooking = async (req, res) => {
   }
 };
 
+export default {createBooking , getUserBookings , getBookingById , deleteBooking , updateBooking , cancelBooking}
