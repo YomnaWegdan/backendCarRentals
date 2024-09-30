@@ -9,6 +9,8 @@ const carRouter = Router();
 
 // Get all cars or by ID
 carRouter.get('/', CC.getCars);
+carRouter.get('/count', CC.getCarCount);
+
 carRouter.get('/:id', CC.getCarById);
 
 // Admin routes (protected)
@@ -40,7 +42,6 @@ carRouter.put(
 );
 
 carRouter.delete('/:id', auth(['admin']), CC.deleteCar);  // Ensure only admins can delete cars
-carRouter.get('/count', CC.getCarCount);
 
 export default carRouter;
 
