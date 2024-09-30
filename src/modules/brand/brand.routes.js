@@ -10,10 +10,11 @@ const brandRouter = Router()
 
 brandRouter.post('/',auth(['admin']), validation(BV.createBrandValidation) ,  BC.createBrand);
 brandRouter.get('/' ,BC.getAllBrands);
+brandRouter.get('/count',auth(['admin', 'user']), BC.getBrandCount);
+
 brandRouter.get('/:id', BC.getBrandById);
 brandRouter.put('/:id',auth(['admin']), validation(BV.updateBrandValidation) , BC.updateBrand);
 brandRouter.delete('/:id',auth(['admin']), BC.deleteBrand);
-brandRouter.get('/count',auth(['admin', 'user']), BC.getBrandCount);
 
 
 export default brandRouter;
