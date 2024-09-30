@@ -9,7 +9,7 @@ const carRouter = Router();
 
 // Get all cars or by ID
 carRouter.get('/', CC.getCars);
-carRouter.get('/count', CC.getCarCount);
+carRouter.get('/count',  auth(['admin', 'user']), CC.getCarCount);
 
 carRouter.get('/:id', CC.getCarById);
 
