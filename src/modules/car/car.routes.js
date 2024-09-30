@@ -40,7 +40,7 @@ carRouter.put(
 );
 
 carRouter.delete('/:id', auth(['admin']), CC.deleteCar);  // Ensure only admins can delete cars
-carRouter.get('/count',auth(['admin', 'user']), CC.getCarCount);
+carRouter.get('/count', CC.getCarCount);
 
 export default carRouter;
 
