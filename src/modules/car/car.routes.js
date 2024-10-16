@@ -30,12 +30,29 @@ carRouter.get('/availableCarsByBrand' , CC.getAvailableCarsByBrand)
 
 
 
+// carRouter.put(
+//   '/:id',
+//   multerHost(validExtensions.image).fields([
+//     { name: 'image', maxCount: 1 },
+//     { name: 'coverImages', maxCount: 3 }
+//   ]), 
+//   validation(CV.updateCarValidation),  // Validate car update data
+//   auth(['admin']),  // Ensure only admins can update cars
+//   CC.updateCar
+// );
+
 carRouter.put(
   '/:id',
   multerHost(validExtensions.image).fields([
     { name: 'image', maxCount: 1 },
     { name: 'coverImages', maxCount: 3 }
   ]), 
+  (req, res, next) => {
+    // Debugging to check multer's output
+    console.log('Files:', req.files);
+    console.log('Body:', req.body);
+    next();
+  },
   validation(CV.updateCarValidation),  // Validate car update data
   auth(['admin']),  // Ensure only admins can update cars
   CC.updateCar
