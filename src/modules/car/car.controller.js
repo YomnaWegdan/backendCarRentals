@@ -81,6 +81,35 @@ export const createCar = async (req, res, next) => {
     }
 };
 
+
+
+
+export const deleteCar = async (req, res, next) => {
+    try {
+        const car = await carModel.findById(req.params.id);
+        if (!car) return next(new appError('Car not found', 404));
+
+        // Remove car from brand's cars array
+        const brand = await brandModel.findById(car.brand);
+        if (brand) {
+            brand.cars.pull(car._id);
+            await brand.save();
+        }
+
+        // Remove images from Cloudinary
+        await cloudinary.uploader.destroy(car.image.public_id);
+        for (const coverImage of car.coverImages) {
+            await cloudinary.uploader.destroy(coverImage.public_id);
+        }
+
+        // Delete car using findByIdAndDelete
+        await carModel.findByIdAndDelete(req.params.id); // Use this instead
+        res.status(200).json({ message: 'Car removed' });
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const updateCar = async (req, res, next) => {
     try {
         const car = await carModel.findById(req.params.id);
@@ -132,37 +161,11 @@ export const updateCar = async (req, res, next) => {
         const updatedCar = await car.save();
         res.status(200).json(updatedCar);
     } catch (error) {
-        console.error("Error in updateCar:", error);
-        next(error);
+        console.error("Error in updateCar:", error); // Log detailed error information
+        next(new appError("Failed to update car. Please check the inputs.", 500));
     }
 };
 
-
-export const deleteCar = async (req, res, next) => {
-    try {
-        const car = await carModel.findById(req.params.id);
-        if (!car) return next(new appError('Car not found', 404));
-
-        // Remove car from brand's cars array
-        const brand = await brandModel.findById(car.brand);
-        if (brand) {
-            brand.cars.pull(car._id);
-            await brand.save();
-        }
-
-        // Remove images from Cloudinary
-        await cloudinary.uploader.destroy(car.image.public_id);
-        for (const coverImage of car.coverImages) {
-            await cloudinary.uploader.destroy(coverImage.public_id);
-        }
-
-        // Delete car using findByIdAndDelete
-        await carModel.findByIdAndDelete(req.params.id); // Use this instead
-        res.status(200).json({ message: 'Car removed' });
-    } catch (error) {
-        next(error);
-    }
-};
 
 
 // Get available cars
