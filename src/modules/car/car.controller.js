@@ -158,6 +158,7 @@ export const updateCar = async (req, res, next) => {
         }
 
         // Save updated car
+        Object.assign(car, req.body);
         const updatedCar = await car.save();
         res.status(200).json(updatedCar);
     } catch (error) {
