@@ -36,7 +36,7 @@ carRouter.put(
     { name: 'image', maxCount: 1 },
     { name: 'coverImages', maxCount: 3 }
   ]), 
-  validation(CV.updateCarValidation),  // Validate car update data
+  // validation(CV.updateCarValidation),  // Validate car update data
   auth(['admin']),  // Ensure only admins can update cars
   CC.updateCar
 );
