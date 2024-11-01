@@ -1,6 +1,7 @@
 
 import { carModel } from "../../models/car.model.js";
 import { bookingModel } from "../../models/booking.model.js";
+import mongoose from "mongoose";
 
  const createBooking = async (req, res) => {
     const { car, startDate, endDate } = req.body;
@@ -94,16 +95,22 @@ import { bookingModel } from "../../models/booking.model.js";
 };
 
 // CANCEL a booking by ID
- const cancelBooking = async (req, res) => {
+const cancelBooking = async (req, res) => {
   try {
+    console.log("Received request to cancel booking with ID:", req.params.id);
+    
+    if (!req.params.id || !mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'Valid booking ID is required' });
+    }
+
     const booking = await bookingModel.findById(req.params.id);
     if (!booking) {
       return res.status(404).json({ message: 'Booking not found' });
     }
-
-    booking.status = 'cancelled'; // Update the status to cancelled
+    
+    booking.status = 'Cancelled'; 
     const cancelledBooking = await booking.save();
-    res.status(200).json(cancelledBooking);
+        res.status(200).json(cancelledBooking);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }
